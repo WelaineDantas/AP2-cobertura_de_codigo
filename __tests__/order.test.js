@@ -70,4 +70,21 @@ describe("Testes iniciais - placeholder", () => {
     order.pay();
     expect(() => order.pay()).toThrow("Order cannot be paid");
   });
+   test("não deve cancelar pedido completado", () => {
+    const order = new Order(1, []);
+    order.pay();
+    order.complete();
+    expect(() => order.cancel()).toThrow("Completed order cannot be cancelled");
+  });
+
+  test("deve criar pedido sem itens (default items = [])", () => {
+  const order = new Order(99);
+  expect(order.items).toEqual([]);
+  expect(order.total).toBe(0);
+  });
+
+  test("deve permitir definir outro método de pagamento", () => {
+  const order = new Order(100, [], "credit_card");
+  expect(order.paymentMethod).toBe("credit_card");
+  });
   });
