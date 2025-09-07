@@ -50,4 +50,24 @@ describe("Testes iniciais - placeholder", () => {
     order.cancel();
     expect(order.status).toBe("cancelled");
   });
+  test("deve remover item e atualizar o total", () => {
+    const item1 = new Item(1, "A", 10);
+    const item2 = new Item(2, "B", 20);
+    const order = new Order(1, [item1, item2]);
+    order.removeItem(1);
+    expect(order.items).toHaveLength(1);
+    expect(order.total).toBe(20);
+  });
+
+  test("deve pagar pedido criado", () => {
+    const order = new Order(1, []);
+    order.pay();
+    expect(order.status).toBe("paid");
+  });
+
+  test("não deve pagar pedido que não esteja 'created'", () => {
+    const order = new Order(1, []);
+    order.pay();
+    expect(() => order.pay()).toThrow("Order cannot be paid");
+  });
   });
