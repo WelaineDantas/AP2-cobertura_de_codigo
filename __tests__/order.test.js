@@ -33,4 +33,21 @@ describe("Testes iniciais - placeholder", () => {
     expect(order.total).toBe(15);
   });
 
+  test("deve completar pedido após pagamento", () => {
+    const order = new Order(1, []);
+    order.pay();
+    order.complete();
+    expect(order.status).toBe("completed");
+  });
+
+  test("não deve completar pedido não pago", () => {
+    const order = new Order(1, []);
+    expect(() => order.complete()).toThrow("Order must be paid before it can be completed");
+  });
+
+  test("deve cancelar pedido antes de completar", () => {
+    const order = new Order(1, []);
+    order.cancel();
+    expect(order.status).toBe("cancelled");
+  });
   });
